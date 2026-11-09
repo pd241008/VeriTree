@@ -1,0 +1,67 @@
+{
+  "traceability_id": "VERITREE-PHASE1-TRACE-9bec879b8cd5",
+  "timestamp": "2026-11-09T15:13:03.351794+05:30",
+  "git_tree_sha": "fda1c9f2f355e0d1a09c2831fb9db157a3cbe606",
+  "system": {
+    "os": "linux",
+    "cpu": "Intel x86_64 (AVX2, FMA)",
+    "toolchains": {
+      "lean": "4.35.0",
+      "lake": "5.0.0",
+      "rustc": "1.98.0",
+      "g++": "16.2.1",
+      "python": "3.14.6"
+    }
+  },
+  "phase1_verification": {
+    "status": "PASSED",
+    "sorry_count": 0,
+    "warnings_count": 0,
+    "files_verified": [
+      "lean4-certificates/VeriTree/Basic.lean",
+      "lean4-certificates/VeriTree/Theorem1_SplitInvariance.lean",
+      "lean4-certificates/VeriTree/Theorem2_RunnerUpDominance.lean",
+      "lean4-certificates/VeriTree/Theorem3_TaylorRemainder.lean"
+    ],
+    "lake_exit_code": 0
+  },
+  "engine_compilation": {
+    "status": "PASSED",
+    "cargo_exit_code": 0,
+    "simd_flags": [
+      "-O3",
+      "-march=native",
+      "-mavx2",
+      "-mfma",
+      "-std=c++20",
+      "-fno-fast-math"
+    ],
+    "cache_line_alignment": 64,
+    "ring_buffer_size_bytes": 128
+  },
+  "artifacts_sha256": {
+    "lean4-certificates/lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
+    "lean4-certificates/lakefile.lean": "bc9caba5854d312fde1b37367e8b7da301d451fe3597dee49fc9f759571e26e2",
+    "lean4-certificates/VeriTree.lean": "3a34763427d46420c7b88a9ec51e41488c3b89563f6f0eb718bdae54f9b76bc1",
+    "lean4-certificates/VeriTree/Basic.lean": "60696d5c74d3b47eb6967c7dda45c9e1943910a8cd36ca852ca7a49e022d04da",
+    "lean4-certificates/VeriTree/Theorem1_SplitInvariance.lean": "505ca9984f3d32cca36a683c191eb263fe9f3822ccaa67fb7bec77002219aadf",
+    "lean4-certificates/VeriTree/Theorem2_RunnerUpDominance.lean": "0f30318cfa71662678a2c7b04251e362195625edda9c302af8b131894081f262",
+    "lean4-certificates/VeriTree/Theorem3_TaylorRemainder.lean": "e64078c233af04a8a8edc7da282d8f0f181126a708dd52ec0125377e8a594b8a",
+    "engine/Cargo.toml": "47da37b47bb09173d6e61d1b9c4fe12ac08342fd085d74e4cfbcd7565ba69a04",
+    "engine/build.rs": "be8252381dead1c8db10cb5dbffaa204a17fae6876b5181126d2ad0d2117b6d7",
+    "engine/csrc/ring_buffer.hpp": "df3a5d0abe717e2cfb5fe98dded7a8f6d165dc21496f46dd2e8250569eb11b5f",
+    "engine/csrc/avx2_cert_eval.cpp": "958e65449a99a5efb4027f85d19f2959a9e5ad9afc78768b78e6381ab5d6696c",
+    "engine/csrc/corouting_tensor.cpp": "b7180801e9649866151549e15411b37e772dc488bfd3b9dd75ac13642752296f",
+    "engine/src/lib.rs": "b299145dea8a7de012fff28e6a39cdfae78da4da653b604d1e3d8d07de7982f3",
+    "engine/src/trainer.rs": "6f59675f8451ab8f26bb6e544ca9464fb82b08338679e276bfb77063cd1b5a71",
+    "engine/src/inverted_index.rs": "59872a0838f5b3804cfaef68a4f4ae771dba0c0376abd50aa484d0de3a494731",
+    "engine/src/layer1_cert.rs": "df439f41f8a5fcb0bbd4bdec0df8f211da54a9e67541cce6e4cdf6b6d8b44237",
+    "engine/src/layer2_quasiml.rs": "bd77d73cd8b12e4c7606ec8903f1352b834a07d9bfe858234c7d21dc5bddd26d",
+    "engine/src/layer3_security.rs": "c58f09968f585a860582891445cee26fb7f6df0b042f9a2f6acfea482df6b80a",
+    "benchmarks/data_loader.py": "039126993b8dbd2a4c7b5da65401b7a884bec35f47f03e3685176ccdbd9b9b64",
+    "benchmarks/run_table1.py": "a4c3ef7b3ea81189c078e83d2f72746fef30fa6fb326585ed5232ecf8d9d6f89",
+    "benchmarks/run_security_eval.py": "e78c8ef46c786f7f58f1397cd54de694ac13ebd872ac491275ca91b7400e026e",
+    "PHASE_WISE_ROADMAP.md": "d56a03fcd77ae7d0b1e03201735b0ca1d5b85097fb02a566baaf1b38baf04f05",
+    "README.md": "9df962c1fe3d59012baec36efac7b6ab26f175de98b49617f98b4b3d46394f10"
+  }
+}
