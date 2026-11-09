@@ -135,3 +135,4 @@ fn test_phase3_unsw_nb15_logistic_loss() {
     // UNSW-NB15 benchmark slice: T=100, d=6, k=4, Binary Logistic Loss (M_3 ≈ 0.0962)
     verify_phase3_ensemble("UNSW-NB15", 5000, 42, 100, 6, false, 84);
 }
+
