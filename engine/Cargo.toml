@@ -3,6 +3,7 @@ name = "veritree-engine"
 version = "0.1.0"
 edition = "2021"
 authors = ["Anonymous ICML Submission"]
+license = "MIT"
 description = "VeriTree: Hardware-Conscious Rust + C++20 Core Execution Engine"
 
 [lib]
