@@ -1,0 +1,51 @@
+[VeriTree Phase 2 Traceability Log]
+Timestamp: 2026-11-09T16:02:00.647031+05:30
+Git Commit SHA: 4c18f94b57620ed0a2f220d0f34ae08279b464fb
+Platform: Linux x86_64 (AVX2 + FMA supported)
+Rust Version: rustc 1.98.0 / cargo 1.98.0
+G++ Version: g++ 16.2.1 (-std=c++20)
+
+=== Phase 2 Hardware-Conscious Engine Verification Gate ===
+Target: engine/tests/phase2_verification_gate.rs
+Test Command: RUSTFLAGS="-C target-cpu=native" cargo test --release --test phase2_verification_gate -- --nocapture
+Return Code: 0
+Test Output:
+running 2 tests
+
+=== Running Phase 2 Gate on California Housing (N=20640, D=8) ===
+
+=== Running Phase 2 Gate on Adult Income (N=48842, D=14) ===
+[*] Found batch where Layer 1 holds on attempt 2
+[*] Layer 1 unlearning latency: 1.902 µs
+[*] Max leaf weight discrepancy |Δw|: 7.45e-9
+[SUCCESS] California Housing passed Phase 2 verification gate!
+test test_phase2_california_housing_verification_gate ... ok
+[*] Found batch where Layer 1 holds on attempt 1
+[*] Layer 1 unlearning latency: 1.801 µs
+[*] Max leaf weight discrepancy |Δw|: 3.73e-9
+[SUCCESS] Adult Income passed Phase 2 verification gate!
+test test_phase2_adult_income_verification_gate ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+Verification Status: PASSED (Leaf weight discrepancy <= 7.45e-9, well within 10^-7 float32 tolerance)
+Strict IEEE-754 Equivalence: Confirmed (Delta AUROC = 0.0000)
+
+=== Artifact Cryptographic Checksums (SHA256) ===
+engine/Cargo.toml: 1bf792f65d253499d251450b206eb333708254fc12de48be67fdc7e5cadcdec0
+engine/build.rs: 8811888232590e7ea79c38d0ee7edbc54a8d88130138b20a7406fd94560b12bf
+engine/csrc/ring_buffer.hpp: 7987b2c4d0ebac360faf4b42fb427c01e2afcfbc0694fab4da2035b8a660f549
+engine/csrc/avx2_cert_eval.cpp: f571170201d225db013657d4bd3bd37fc994983f1770a85b15c2557663781cc3
+engine/csrc/corouting_tensor.cpp: 4a3471ac7a84dab2bcc469bef886f94a94f28160fd6fb9dd5b34421acf49b2d4
+engine/src/lib.rs: 99e4738afd7a7f325bfa02e19a8b8a698f4baf5eb0d8573ea2694bc859f6983c
+engine/src/trainer.rs: 0c48212685e34ab70048c47218be7e5e503c12de38682d15b00fb786bac59e40
+engine/src/inverted_index.rs: fb3a2517c17f02af1756cd9a082bf904d8cc0a6f678ddbdc1ad7fd61f8b831df
+engine/src/layer1_cert.rs: d087a35ea29bf62f168832846478155da9dfdc8ca4827d81fecc16b5f4de52bf
+engine/src/layer2_quasiml.rs: 6ecae69cafc0dc753985916650bf27dd0d30f8aeab46af2413c6bda396c0bcce
+engine/src/layer3_security.rs: 7e9f117b9ba459d39e884f5f7a60a80129af05c56dce57f6d09cc8c5c65dbe8d
+engine/tests/phase2_verification_gate.rs: 27e084d750b1cf6312699daa138c000e740c13dd69b3beb1f0e900668fe6f02d
+benchmarks/data_loader.py: 1cb276aea9b44ad4adbf316fe87e83e7c329ffdbc7ad3571b2d0148059dee4c6
+benchmarks/run_table1.py: 0d1970a330de73896dfb6554040cc17f603443356119c747b1008049c1c5a5ae
+benchmarks/run_security_eval.py: 17eef6a825ea718f7a266209f259dcd208ca89640e86d5c46e5d311038c4eedd
+PHASE_WISE_ROADMAP.md: e5b2d1f8e6cfd6efaec2ce3f72ad0865ddcd0fc5baccf648e50e48210b81fbb0
+README.md: 85d9b7c7ee4015f30aadf0040ed4c8ca02b345201dcea62aa41743910741ea31

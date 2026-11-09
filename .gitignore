@@ -1,1 +1,35 @@
+# Papers and manuscript source (user instruction: do not add paper)
+docs/
+*.pdf
+*.tex
+
+# Rust build artifacts & caches
+target/
+engine/target/
+**/*.rs.bk
+Cargo.lock
+
+# Lean 4 Lake build artifacts & caches
+.lake/
+lean4-certificates/.lake/
+*.olean
+*.ilean
+*.c
+
+# C++ build artifacts
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Binary data & caches
+data/
+*.bin
 artifact/
