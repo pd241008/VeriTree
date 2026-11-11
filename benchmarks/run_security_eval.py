@@ -7,6 +7,7 @@ VeriTree Layer 3 Security Evaluation:
 import time
 import json
 import argparse
+import os
 import numpy as np
 from typing import Dict, Any
 
@@ -67,6 +68,7 @@ def main():
     parser = argparse.ArgumentParser(description="VeriTree Security Evaluation Harness")
     parser.add_argument("--eval_type", type=str, default="both", choices=["backdoor", "dos", "both"])
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--output", type=str, default="results/security_results.json")
     args = parser.parse_args()
 
     results = {}
@@ -82,6 +84,10 @@ def main():
         print("[*] Adaptive Unlearning-DoS Defense:")
         print(f"    - Layer 2 Absorbed Flips:   {results['unlearning_dos']['absorbed_by_runner_up_pct']}%")
         print(f"    - p99 Latency Overhead:     {results['unlearning_dos']['p99_adversarial_overhead_ratio']}x (Baseline spike: 38x)")
+
+    os.makedirs(os.path.dirname(args.output), exist_ok=True)
+    with open(args.output, "w") as f:
+        json.dump(results, f, indent=2)
 
 if __name__ == "__main__":
     main()
