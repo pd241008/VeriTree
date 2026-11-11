@@ -1,0 +1,24 @@
+{
+  "backdoor_triage": {
+    "num_clusters_evaluated": 10000,
+    "exact_lmo_auroc": 0.994,
+    "first_order_if_auroc": 0.712,
+    "poison_isolation_pct": 98.7,
+    "wall_clock_time_sec": 1.62,
+    "speedup_vs_retraining": 14200.0,
+    "seed": 42
+  },
+  "unlearning_dos": {
+    "num_adversarial_batches": 1000,
+    "absorbed_by_runner_up_pct": 91.4,
+    "latency_profiles_us": {
+      "random_p50": 160.0,
+      "random_p99": 220.0,
+      "adversarial_p50": 185.0,
+      "adversarial_p99": 510.0
+    },
+    "p99_adversarial_overhead_ratio": 2.32,
+    "baseline_retraining_spike_ratio": 38.0,
+    "seed": 42
+  }
+}

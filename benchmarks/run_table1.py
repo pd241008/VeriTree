@@ -8,6 +8,7 @@ Adheres to Design-Dungeons: JSON artifacts, fixed seeds, structured logging.
 import time
 import json
 import argparse
+import os
 import numpy as np
 from typing import Dict, Any
 
@@ -68,6 +69,10 @@ def main():
     print(f"    - Raw Scan Fallback:  {result['layer_breakdown_pct']['raw_scan_fallback']}%")
     print(f"    - Latency:            {result['latency_us']} us (Speedup: {result['baseline_comparison']['speedup_vs_hedgecut']}x)")
     print(f"    - Delta AUROC:        {result['delta_auroc']} (Bit-Exact)")
+
+    os.makedirs(os.path.dirname(args.output), exist_ok=True)
+    with open(args.output, "w") as f:
+        json.dump(result, f, indent=2)
 
 if __name__ == "__main__":
     main()
