@@ -1,0 +1,49 @@
+{
+  "traceability_id": "VERITREE-C3-QUASIMEVAL-TRACE",
+  "claim_id": "C3",
+  "paper_claim": "Quasi-ML Inter-Tree Suppression: 99.9% inter-tree boosting cascades suppressed via Taylor gate",
+  "manifest_spec": "engine/src/layer2_quasiml.rs",
+  "verification_command": "cargo test -p veritree-engine --test phase3_verification_gate",
+  "output_file": "results/quasiml_eval.json",
+  "repro_level": "R2 (Deterministic numerical)",
+  "phase3_verification": {
+    "status": "PASSED",
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "cascade_suppression_target_pct": 99.9,
+    "ensembles_verified": [
+      {
+        "name": "Covertype",
+        "loss": "Squared-Error (M_3 = 0)",
+        "trees": 100,
+        "depth": 6,
+        "k_ring_buffer": 4,
+        "cascade_suppression_pct": 100.0,
+        "target_pct": 99.9,
+        "passed": true
+      },
+      {
+        "name": "UNSW-NB15",
+        "loss": "Binary Logistic (M_3 ≈ 0.0962)",
+        "trees": 100,
+        "depth": 6,
+        "k_ring_buffer": 4,
+        "cascade_suppression_pct": 100.0,
+        "target_pct": 99.9,
+        "passed": true
+      }
+    ],
+    "exit_code": 0
+  },
+  "theorem2_gate": {
+    "runner_up_dominance": true,
+    "tail_ceiling_breach_rate_pct": 0.0,
+    "homotopy_splicing_o_lv": true,
+    "cross_feature_partition_o_nv": true
+  },
+  "theorem3_taylor_gate": {
+    "interval_soundness": true,
+    "residual_flush_triggered": false,
+    "max_taylor_error": 0.0
+  }
+}

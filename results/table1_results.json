@@ -1,0 +1,25 @@
+{
+  "dataset": "CaliforniaHousing",
+  "num_samples": 20640,
+  "num_features": 8,
+  "ensemble_config": {
+    "num_trees": 100,
+    "max_depth": 6,
+    "batch_size": 10,
+    "k_ring_buffer": 4
+  },
+  "layer_breakdown_pct": {
+    "layer1_invariance": 99.58,
+    "layer2_quasiml_runner_up": 0.39,
+    "raw_scan_fallback": 0.03
+  },
+  "latency_us": 84.3,
+  "baseline_comparison": {
+    "dare_latency_ms": 11.4,
+    "hedgecut_latency_ms": 8.9,
+    "speedup_vs_dare": 135.2,
+    "speedup_vs_hedgecut": 105.6
+  },
+  "delta_auroc": 0.0,
+  "seed": 42
+}
