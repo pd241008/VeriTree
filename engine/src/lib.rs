@@ -79,6 +79,8 @@ impl VeriTreeEnsemble {
                 // Simulated exact unlearning shift
                 let new_w = old_w * 0.999;
                 delta_w[leaf_id] = new_w - old_w;
+                // Apply the unlearning shift to the leaf weight
+                self.trees[t].leaf_weights[leaf_id] = new_w;
                 if delta_w[leaf_id].abs() > 1e-6 {
                     has_shift = true;
                 }
