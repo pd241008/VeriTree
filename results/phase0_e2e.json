@@ -18,8 +18,8 @@
       "num_features": 28,
       "dtype": "uint8",
       "mmap_bytes": 308000000,
-      "column_access_wall_ns": 1330370336,
-      "column_access_wall_us": 1330370.336,
+      "column_access_wall_ns": 1689362449,
+      "column_access_wall_us": 1689362.449,
       "first_column_sum": 1402672208
     },
     "covertype": {
@@ -28,8 +28,8 @@
       "num_features": 54,
       "dtype": "uint8",
       "mmap_bytes": 31374648,
-      "column_access_wall_ns": 327822094,
-      "column_access_wall_us": 327822.094,
+      "column_access_wall_ns": 264704983,
+      "column_access_wall_us": 264704.983,
       "first_column_sum": 74169629
     },
     "adult": {
@@ -38,9 +38,19 @@
       "num_features": 14,
       "dtype": "uint8",
       "mmap_bytes": 455854,
-      "column_access_wall_ns": 19950851,
-      "column_access_wall_us": 19950.851,
+      "column_access_wall_ns": 1502101,
+      "column_access_wall_us": 1502.101,
       "first_column_sum": 699979
+    },
+    "creditcard": {
+      "dataset": "creditcard",
+      "num_samples": 284808,
+      "num_features": 29,
+      "dtype": "uint8",
+      "mmap_bytes": 8259432,
+      "column_access_wall_ns": 22171279,
+      "column_access_wall_us": 22171.279,
+      "first_column_sum": 36313311
     },
     "unsw_nb15": {
       "dataset": "unsw_nb15",
@@ -48,8 +58,8 @@
       "num_features": 44,
       "dtype": "uint8",
       "mmap_bytes": 3622652,
-      "column_access_wall_ns": 16200066,
-      "column_access_wall_us": 16200.066,
+      "column_access_wall_ns": 5908892,
+      "column_access_wall_us": 5908.892,
       "first_column_sum": 10497459
     },
     "california_housing": {
@@ -58,12 +68,12 @@
       "num_features": 8,
       "dtype": "uint8",
       "mmap_bytes": 165120,
-      "column_access_wall_ns": 1594367,
-      "column_access_wall_us": 1594.367,
+      "column_access_wall_ns": 217221,
+      "column_access_wall_us": 217.221,
       "first_column_sum": 2631977
     }
   },
-  "datasets_present_count": 5,
+  "datasets_present_count": 6,
   "datasets_total_claimed": 6,
   "seed": 42
 }

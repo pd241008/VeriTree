@@ -30,6 +30,7 @@ __pycache__/
 .pytest_cache/
 
 # Binary data & caches
-
-*.bin
+data/datasets/          # large raw downloads - regenerate via Go downloader
+data/preprocessed/      # pre-binned matrices & shape files - regenerate via prebin script
+*.bin                   # pre-binned matrices - regenerate via prebin script
 artifact/

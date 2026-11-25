@@ -1,10 +1,10 @@
 """
 VeriTree Phase 0: End-to-End Reproducibility Script
-Exercises the Phase 0 toolchain & storage tenets end-to-end using REAL data
-from `data/data_pipleine.go` (Go downloader, 4-8 workers) + prebinned .bin files.
+Exercises the Phase 0 toolchain & storage tenets using REAL data from
+`data/datasets/` (Go downloader) + `data/preprocessed/` (pre-binned .bin files).
 
-Does NOT synthesize data or results. Skips datasets whose .bin file is absent.
-Writes results/phase0_e2e.json traceability manifest only for datasets actually present.
+Does NOT synthesize data or results. Reports which datasets are actually present.
+Writes results/phase0_e2e.json traceability manifest.
 """
 
 import json
@@ -16,23 +16,23 @@ from typing import Dict, Any, Optional
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(REPO_ROOT, "benchmarks"))
 
-from data_loader import load_benchmark_dataset  # noqa: E402
+from data_loader import load_benchmark_dataset, PREPROCESSED_DIR  # noqa: E402
 
 SPEC_MAP = {
     "higgs": (11_000_000, 28),
     "covertype": (581_012, 54),
     "adult": (48_842, 14),
     "creditcard": (284_807, 30),
-    "unsw_nb15": (257_673, 42),
+    "unsw_nb15": (257_673, 44),
     "california_housing": (20_640, 8),
 }
 
 
 def mmap_load_and_time(name: str) -> Optional[Dict[str, Any]]:
     """Load a dataset via mmap column-store and time column access. Returns None if .bin absent."""
-    path = os.path.join("data", f"{name}_binned_uint8.bin")
+    path = os.path.join(PREPROCESSED_DIR, f"{name}_binned_uint8.bin")
     if not os.path.exists(path):
-        print(f"[SKIP] {name}: no pre-binned .bin at {path} — run the Go downloader first")
+        print(f"[SKIP] {name}: no pre-binned .bin at {path}")
         return None
 
     loader, g, h = load_benchmark_dataset(name)
