@@ -22,10 +22,19 @@
       "engine_integration_phase0": 6,
       "benchmarks_data_loader": 6
     },
-    "datasets_present": 0,
+    "datasets_present": 5,
     "datasets_total_claimed": 6,
-    "datasets_verified": [],
-    "note": "No real .bin data downloaded yet. Tests pass against loader logic but no dataset files exist. Run: cd data && go run data_pipleine.go -download -workers 8, then prebin raw CSVs to data/*_binned_uint8.bin.",
+    "datasets_verified": [
+      {"name": "HIGGS", "samples": 11000000, "features": 28, "passed": true},
+      {"name": "Covertype", "samples": 581012, "features": 54, "passed": true},
+      {"name": "Adult", "samples": 32561, "features": 14, "passed": true},
+      {"name": "UNSW-NB15", "samples": 82333, "features": 44, "passed": true},
+      {"name": "CaliforniaHousing", "samples": 20640, "features": 8, "passed": true}
+    ],
+    "datasets_pending": [
+      {"name": "CreditCard", "note": "Requires Kaggle CLI: kaggle datasets download -d mlg-ulb/creditcardfraud (API credentials needed)"}
+    ],
+    "note": "5/6 datasets downloaded and pre-binned from real UCI/sklearn sources. CreditCard Fraud requires Kaggle CLI + API credentials (manual). No data fabrication. Run: cd data && go run data_pipleine.go -download -workers 8, then python3 benchmarks/prebin_datasets.py",
     "exit_code": 0
   },
   "toolchain_tenets": {
@@ -41,11 +50,12 @@
     "engine/src/telemetry.rs": "d1cae1bb1e129befaca83d9c6942e34eea2302c0dd14c9ed154a5d4a9362daa5",
     "engine/tests/phase0_integration.rs": "411357e4001fa0a849cc9e9ed6132686ecbee5d1cacd0d4aaced8e3adbc9d1a0",
     "engine/src/lib.rs": "04d65e01773df0acea8b17898d9228679f931327d37b694af481a3cf95b26194",
-    "benchmarks/test_data_loader.py": "73ac03ccd09aedad4d8c5f5424aa4952ecf936b856288cba67af7116baaf7720",
+    "benchmarks/test_data_loader.py": "0408b37d0baa60dc9f30fc4ee50959b25fdc00dd0b08c760110fc45b6131d950",
     "benchmarks/e2e_phase0.py": "8ae0781bd97c585305ffd4cf9025cb220cfc13f0d47d3878cb86e00c91a8abd2",
-    "benchmarks/data_loader.py": "671d32002b9659907a876676231d2815fdc38fbdd13d6db92a3e093db265f35f",
+    "benchmarks/data_loader.py": "0ba8bf0d81f9a6ec8930b3f549d3c8d97c08b8b8feace109afad28e4c03b4d92",
+    "benchmarks/prebin_datasets.py": "28d51371f16c9fa0ff8b90f657a0bb33aabfe82bc4ac4a5f1b832e3c1ce380ea",
     "data/data_pipleine.go": "497b83620396ea43acfe5740fb24de59f41ffadd23a3c020063846453f86678f",
-    "results/phase0_e2e.json": "035dea33ada17c94a2647d4c05ef1dd11f25027b00c0bdc03ff5ed5c520c4bfc",
-    "results/phase0_results.json": "1a6a788ae762c5bf332a59cc69bd94b10a5fc5ae3f1f42db18ba4a15febbc9c3"
+    "results/phase0_e2e.json": "10c98dc5e860ef5bcb52db629189cd6c7365779a79db149777846f8854edb880",
+    "results/phase0_results.json": "eccf9ebc6c2a5880a5ea0901e17c76496d6492857b34b04a1f3c4d085d5c6105"
   }
 }
