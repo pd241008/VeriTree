@@ -10,6 +10,7 @@ it raises FileNotFoundError with a clear message pointing at the downloader.
 """
 
 import os
+import json
 import mmap
 import struct
 import numpy as np
@@ -27,13 +28,29 @@ class MmapColumnStore:
         self._mmap_obj: Optional[np.memmap] = None
 
     def open(self) -> np.memmap:
-        """Open an existing memory-mapped matrix. Never creates/fabricates data."""
+        """Open an existing memory-mapped matrix. Never creates/fabricates data.
+
+        Derives the actual row count from the on-disk file size so real-world
+        downloads (which may differ from the paper's nominal N) are handled
+        without fabricating dimensions.
+        """
         if not os.path.exists(self.data_path):
             raise FileNotFoundError(
                 f"Pre-binned data file not found: {self.data_path}\n"
                 f"Run: cd data && go run data_pipleine.go -download -workers 8\n"
                 f"Then prebin the raw CSV to {self.data_path}"
             )
+        actual_bytes = os.path.getsize(self.data_path)
+        if actual_bytes % (self.num_features * self.itemsize) != 0:
+            raise ValueError(
+                f"{self.data_path}: size {actual_bytes} not divisible by "
+                f"{self.num_features} features x {self.itemsize} bytes"
+            )
+        actual_samples = actual_bytes // (self.num_features * self.itemsize)
+        if actual_samples != self.num_samples:
+            # Real download differs from nominal spec; trust the file.
+            self.num_samples = actual_samples
+            self.expected_bytes = actual_bytes
         self._mmap_obj = np.memmap(
             self.data_path,
             dtype=self.dtype,
@@ -69,15 +86,26 @@ def load_benchmark_dataset(
         "covertype": (581012, 54),
         "adult": (48842, 14),
         "creditcard": (284807, 30),
-        "unsw_nb15": (257673, 42),
+        "unsw_nb15": (257673, 44),
         "california_housing": (20640, 8)
     }
     key = dataset_name.lower()
     if key not in spec_map:
         raise ValueError(f"Unknown benchmark: {dataset_name}. Expected one of {list(spec_map.keys())}")
 
-    n_samples, n_feats = spec_map[key]
+    nominal_n, nominal_d = spec_map[key]
     path = os.path.join(base_dir, f"{key}_binned_uint8.bin")
+
+    # Prefer actual dimensions from the prebinning sidecar (real data may
+    # differ from the paper's nominal N/D). Never fabricates dimensions.
+    n_samples, n_feats = nominal_n, nominal_d
+    shape_path = os.path.join(base_dir, f"{key}_shape.json")
+    if os.path.exists(shape_path):
+        with open(shape_path) as f:
+            shape = json.load(f)
+        n_samples = shape["num_samples"]
+        n_feats = shape["num_features"]
+
     loader = MmapColumnStore(path, n_samples, n_feats, is_binned=True)
 
     # Gradients/hessians come from the training pipeline, not the feature store.

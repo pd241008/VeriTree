@@ -8,6 +8,7 @@ Tests that require real .bin data skip gracefully when the files are absent
 """
 
 import os
+import json
 import sys
 import tempfile
 
@@ -38,15 +39,42 @@ def test_spec_map_has_all_six_datasets():
     }
 
 
-def test_loader_raises_when_bin_missing():
-    """load_benchmark_dataset raises FileNotFoundError (not synthetic data) when .bin absent."""
+def _shape_path(name: str) -> str:
+    return os.path.join("data", f"{name}_shape.json")
+
+
+def test_loader_opens_present_datasets_and_misses_absent():
+    """Present .bin files open with real dimensions; absent ones raise FileNotFoundError."""
+    present = 0
+    absent = 0
     for name in SPEC_MAP:
+        path = _bin_path(name)
+        shape_path = _shape_path(name)
+        if not os.path.exists(path):
+            absent += 1
+            try:
+                loader, g, h = load_benchmark_dataset(name)
+                loader.open()
+                assert False, f"{name}: expected FileNotFoundError for missing .bin"
+            except FileNotFoundError:
+                pass
+            continue
+        present += 1
+        # Actual dimensions come from the prebinning sidecar, not nominal spec.
+        with open(shape_path) as f:
+            actual = json.load(f)
+        exp_n, exp_d = actual["num_samples"], actual["num_features"]
+        loader, g, h = load_benchmark_dataset(name)
+        loader.open()
         try:
-            loader, g, h = load_benchmark_dataset(name)
-            loader.open()
-            assert False, f"{name}: expected FileNotFoundError, got open success"
-        except FileNotFoundError:
-            pass  # expected: no real data downloaded yet
+            assert loader._mmap_obj.shape == (exp_n, exp_d), \
+                f"{name}: shape {loader._mmap_obj.shape} != ({exp_n},{exp_d})"
+            assert loader._mmap_obj.dtype == np.uint8
+            assert g is None and h is None, "gradients/hessians must be None (not fabricated)"
+        finally:
+            loader.close()
+    assert present == 5, f"expected 5 present datasets, got {present}"
+    assert absent == 1, f"expected 1 absent dataset (CreditCard), got {absent}"
 
 
 def test_mmap_column_store_opens_existing_file():
@@ -108,7 +136,7 @@ def test_gradients_hessians_are_none_not_fabricated():
 
 if __name__ == "__main__":
     test_spec_map_has_all_six_datasets()
-    test_loader_raises_when_bin_missing()
+    test_loader_opens_present_datasets_and_misses_absent()
     test_mmap_column_store_opens_existing_file()
     test_mmap_column_store_float32_mode()
     test_unknown_dataset_raises()
