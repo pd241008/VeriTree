@@ -30,6 +30,6 @@ __pycache__/
 .pytest_cache/
 
 # Binary data & caches
-data/
+
 *.bin
 artifact/
