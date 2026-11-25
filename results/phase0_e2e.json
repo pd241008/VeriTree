@@ -1,0 +1,18 @@
+{
+  "phase": 0,
+  "description": "Workspace architecture & toolchain initialization",
+  "tenets": [
+    "64-byte L1 cache-line alignment",
+    "AVX2 + FMA SIMD",
+    "Strict IEEE-754 determinism (-fno-fast-math)",
+    "Zero-copy mmap-backed uint8_t column store",
+    "No data fabrication \u2014 real .bin files required"
+  ],
+  "toolchains": {
+    "python": "3.14.6"
+  },
+  "datasets_present": {},
+  "datasets_present_count": 0,
+  "datasets_total_claimed": 6,
+  "seed": 42
+}
