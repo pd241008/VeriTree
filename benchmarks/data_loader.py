@@ -1,7 +1,12 @@
 """
 VeriTree Mmap Binary Column-Store Loader
-Supports zero-copy memory-mapped access for 12 tabular benchmarks (HIGGS, Covertype, etc.)
-Stores pre-binned histogram matrices (uint8_t bins) and raw float32 targets without exhausting RAM.
+Supports zero-copy memory-mapped access for pre-binned uint8_t feature matrices.
+Real data is produced by `data/data_pipleine.go` (Go downloader, 4-8 workers)
+which downloads raw CSVs/UCI archives into `data/`, then a prebinning step
+converts them to `data/<dataset>_binned_uint8.bin`.
+
+This loader does NOT synthesize or fabricate data. If a `.bin` file is missing
+it raises FileNotFoundError with a clear message pointing at the downloader.
 """
 
 import os
@@ -22,18 +27,17 @@ class MmapColumnStore:
         self._mmap_obj: Optional[np.memmap] = None
 
     def open(self) -> np.memmap:
-        """Opens or creates the memory-mapped matrix."""
+        """Open an existing memory-mapped matrix. Never creates/fabricates data."""
         if not os.path.exists(self.data_path):
-            os.makedirs(os.path.dirname(os.path.abspath(self.data_path)), exist_ok=True)
-            # Create sparse disk-backed file
-            with open(self.data_path, "wb") as f:
-                f.seek(self.expected_bytes - 1)
-                f.write(b"\0")
-        
+            raise FileNotFoundError(
+                f"Pre-binned data file not found: {self.data_path}\n"
+                f"Run: cd data && go run data_pipleine.go -download -workers 8\n"
+                f"Then prebin the raw CSV to {self.data_path}"
+            )
         self._mmap_obj = np.memmap(
             self.data_path,
             dtype=self.dtype,
-            mode="r+",
+            mode="r",
             shape=(self.num_samples, self.num_features)
         )
         return self._mmap_obj
@@ -45,18 +49,20 @@ class MmapColumnStore:
 
     def close(self):
         if self._mmap_obj is not None:
-            self._mmap_obj.flush()
             del self._mmap_obj
             self._mmap_obj = None
 
 def load_benchmark_dataset(
     dataset_name: str,
     base_dir: str = "data"
-) -> Tuple[MmapColumnStore, np.ndarray, np.ndarray]:
+) -> Tuple[MmapColumnStore, Optional[np.ndarray], Optional[np.ndarray]]:
     """
     Standard loader returning (mmap_features, gradients, hessians) for:
     HIGGS (N=11M, D=28), Covertype (N=581k, D=54), Adult Income (N=48k, D=14),
     CreditCard Fraud (N=284k, D=30), UNSW-NB15 (N=257k, D=42), California Housing (N=20k, D=8).
+
+    Gradients/hessians are training-derived and are NOT synthesized here.
+    They are returned as None until the training pipeline supplies them.
     """
     spec_map = {
         "higgs": (11000000, 28),
@@ -69,13 +75,11 @@ def load_benchmark_dataset(
     key = dataset_name.lower()
     if key not in spec_map:
         raise ValueError(f"Unknown benchmark: {dataset_name}. Expected one of {list(spec_map.keys())}")
-    
+
     n_samples, n_feats = spec_map[key]
     path = os.path.join(base_dir, f"{key}_binned_uint8.bin")
     loader = MmapColumnStore(path, n_samples, n_feats, is_binned=True)
-    
-    # Initialize synthetic gradients/hessians for benchmarking harness
-    g = np.zeros(n_samples, dtype=np.float32)
-    h = np.ones(n_samples, dtype=np.float32)
-    return loader, g, h
 
+    # Gradients/hessians come from the training pipeline, not the feature store.
+    # Return None to avoid fabricating labels.
+    return loader, None, None
