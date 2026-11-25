@@ -18,9 +18,7 @@
       "num_features": 28,
       "dtype": "uint8",
       "mmap_bytes": 308000000,
-      "column_access_wall_ns": 1689362449,
-      "column_access_wall_us": 1689362.449,
-      "first_column_sum": 1402672208
+      "presence_only": true
     },
     "covertype": {
       "dataset": "covertype",
@@ -28,9 +26,10 @@
       "num_features": 54,
       "dtype": "uint8",
       "mmap_bytes": 31374648,
-      "column_access_wall_ns": 264704983,
-      "column_access_wall_us": 264704.983,
-      "first_column_sum": 74169629
+      "column_access_wall_ns": 358203355,
+      "column_access_wall_us": 358203.355,
+      "first_column_sum": 74169629,
+      "presence_only": false
     },
     "adult": {
       "dataset": "adult",
@@ -38,9 +37,10 @@
       "num_features": 14,
       "dtype": "uint8",
       "mmap_bytes": 455854,
-      "column_access_wall_ns": 1502101,
-      "column_access_wall_us": 1502.101,
-      "first_column_sum": 699979
+      "column_access_wall_ns": 3418502,
+      "column_access_wall_us": 3418.502,
+      "first_column_sum": 699979,
+      "presence_only": false
     },
     "creditcard": {
       "dataset": "creditcard",
@@ -48,9 +48,10 @@
       "num_features": 29,
       "dtype": "uint8",
       "mmap_bytes": 8259432,
-      "column_access_wall_ns": 22171279,
-      "column_access_wall_us": 22171.279,
-      "first_column_sum": 36313311
+      "column_access_wall_ns": 46589982,
+      "column_access_wall_us": 46589.982,
+      "first_column_sum": 36313311,
+      "presence_only": false
     },
     "unsw_nb15": {
       "dataset": "unsw_nb15",
@@ -58,9 +59,10 @@
       "num_features": 44,
       "dtype": "uint8",
       "mmap_bytes": 3622652,
-      "column_access_wall_ns": 5908892,
-      "column_access_wall_us": 5908.892,
-      "first_column_sum": 10497459
+      "column_access_wall_ns": 16467167,
+      "column_access_wall_us": 16467.167,
+      "first_column_sum": 10497459,
+      "presence_only": false
     },
     "california_housing": {
       "dataset": "california_housing",
@@ -68,12 +70,95 @@
       "num_features": 8,
       "dtype": "uint8",
       "mmap_bytes": 165120,
-      "column_access_wall_ns": 217221,
-      "column_access_wall_us": 217.221,
-      "first_column_sum": 2631977
+      "column_access_wall_ns": 1249928,
+      "column_access_wall_us": 1249.928,
+      "first_column_sum": 2631977,
+      "presence_only": false
+    },
+    "yearpredictionmsd": {
+      "dataset": "yearpredictionmsd",
+      "num_samples": 515345,
+      "num_features": 90,
+      "dtype": "uint8",
+      "mmap_bytes": 46381050,
+      "column_access_wall_ns": 670296279,
+      "column_access_wall_us": 670296.279,
+      "first_column_sum": 65706529,
+      "presence_only": false
+    },
+    "susy": {
+      "dataset": "susy",
+      "num_samples": 5000000,
+      "num_features": 18,
+      "dtype": "uint8",
+      "mmap_bytes": 90000000,
+      "presence_only": true
+    },
+    "bank_marketing": {
+      "dataset": "bank_marketing",
+      "num_samples": 41188,
+      "num_features": 20,
+      "dtype": "uint8",
+      "mmap_bytes": 823760,
+      "column_access_wall_ns": 8698698,
+      "column_access_wall_us": 8698.698,
+      "first_column_sum": 817523,
+      "presence_only": false
+    },
+    "diabetes": {
+      "dataset": "diabetes",
+      "num_samples": 101766,
+      "num_features": 49,
+      "dtype": "uint8",
+      "mmap_bytes": 4986534,
+      "column_access_wall_ns": 37139626,
+      "column_access_wall_us": 37139.626,
+      "first_column_sum": 12975165,
+      "presence_only": false
+    },
+    "epsilon": {
+      "dataset": "epsilon",
+      "num_samples": 567,
+      "num_features": 2000,
+      "dtype": "uint8",
+      "mmap_bytes": 1134000,
+      "column_access_wall_ns": 14547852,
+      "column_access_wall_us": 14547.852,
+      "first_column_sum": 72293,
+      "presence_only": false
+    },
+    "cicids2017": {
+      "dataset": "cicids2017",
+      "num_samples": 2830743,
+      "num_features": 84,
+      "dtype": "uint8",
+      "mmap_bytes": 237782412,
+      "presence_only": true
+    },
+    "nsl_kdd": {
+      "dataset": "nsl_kdd",
+      "num_samples": 125973,
+      "num_features": 18,
+      "dtype": "uint8",
+      "mmap_bytes": 2267514,
+      "column_access_wall_ns": 4618793,
+      "column_access_wall_us": 4618.793,
+      "first_column_sum": 70407,
+      "presence_only": false
+    },
+    "rta": {
+      "dataset": "rta",
+      "num_samples": 12316,
+      "num_features": 31,
+      "dtype": "uint8",
+      "mmap_bytes": 381796,
+      "column_access_wall_ns": 864621,
+      "column_access_wall_us": 864.621,
+      "first_column_sum": 0,
+      "presence_only": false
     }
   },
-  "datasets_present_count": 6,
-  "datasets_total_claimed": 6,
+  "datasets_present_count": 14,
+  "datasets_total_claimed": 14,
   "seed": 42
 }

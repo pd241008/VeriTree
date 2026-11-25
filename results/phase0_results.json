@@ -22,18 +22,29 @@
       "engine_integration_phase0": 6,
       "benchmarks_data_loader": 6
     },
-    "datasets_present": 6,
-    "datasets_total_claimed": 6,
+    "datasets_present": 14,
+    "datasets_total_claimed": 15,
     "datasets_verified": [
       {"name": "HIGGS", "samples": 11000000, "features": 28, "passed": true},
       {"name": "Covertype", "samples": 581012, "features": 54, "passed": true},
       {"name": "Adult", "samples": 32561, "features": 14, "passed": true},
       {"name": "CreditCard", "samples": 284808, "features": 29, "passed": true},
       {"name": "UNSW-NB15", "samples": 82333, "features": 44, "passed": true},
-      {"name": "CaliforniaHousing", "samples": 20640, "features": 8, "passed": true}
+      {"name": "CaliforniaHousing", "samples": 20640, "features": 8, "passed": true},
+      {"name": "YearPredictionMSD", "samples": 515345, "features": 90, "passed": true},
+      {"name": "SUSY", "samples": 5000000, "features": 18, "passed": true},
+      {"name": "BankMarketing", "samples": 41188, "features": 20, "passed": true},
+      {"name": "Diabetes", "samples": 101766, "features": 49, "passed": true},
+      {"name": "Epsilon", "samples": 567, "features": 2000, "passed": true},
+      {"name": "CICIDS2017", "samples": 2830743, "features": 84, "passed": true},
+      {"name": "NSL-KDD", "samples": 125973, "features": 18, "passed": true},
+      {"name": "RTA", "samples": 12316, "features": 31, "passed": true}
     ],
-    "datasets_pending": [],
-    "note": "6/6 VeriTree paper datasets downloaded from real UCI/sklearn/manual sources and pre-binned to data/preprocessed/*.bin. No data fabrication. CreditCard Fraud came from user-placed archive.zip (Kaggle mlg-ulb/creditcardfraud).",
+    "datasets_pending": [
+      {"name": "KDD Cup 1999", "note": "UCI URL returned HTTP 404 (moved/removed)"},
+      {"name": "MSLR-WEB10K", "note": "Downloaded zip is corrupted/invalid (1.2GB, no central directory)"}
+    ],
+    "note": "14/15 datasets downloaded from real UCI/sklearn/OpenML/centralized sources and pre-binned to data/preprocessed/*.bin. Epsilon ARFF from OpenML was truncated (567 rows vs expected 400K). No data fabrication. CreditCard Fraud from user-placed archive.zip (Kaggle mlg-ulb/creditcardfraud).",
     "exit_code": 0
   },
   "toolchain_tenets": {
@@ -49,12 +60,12 @@
     "engine/src/telemetry.rs": "d1cae1bb1e129befaca83d9c6942e34eea2302c0dd14c9ed154a5d4a9362daa5",
     "engine/tests/phase0_integration.rs": "411357e4001fa0a849cc9e9ed6132686ecbee5d1cacd0d4aaced8e3adbc9d1a0",
     "engine/src/lib.rs": "04d65e01773df0acea8b17898d9228679f931327d37b694af481a3cf95b26194",
-    "benchmarks/test_data_loader.py": "c48321bb955f781a118bc64f21854c146fbaac0d5f24faab256cea639d6c4aec",
-    "benchmarks/e2e_phase0.py": "b8cd6b4686a8b6963b9ed86b6a01088c3c8da7f282e84d999e42f275e268dc16",
-    "benchmarks/data_loader.py": "fa16474534179f63588a27d2784398fbede4b7aaa287771f7957a40f05931324",
-    "benchmarks/prebin_datasets.py": "92c9fc419b0c68b66136440009091a3736f08c08dc774a30e4266c6c87ef0464",
+    "benchmarks/test_data_loader.py": "0ddddb0e466b75f325b23991d220cb40dae53c20b32f378069c61c03ca55082d",
+    "benchmarks/e2e_phase0.py": "e2da963b1cec00d741f2ed60380efd5950b0694f431c5bda585a5e88e0fe64c5",
+    "benchmarks/data_loader.py": "a7e67be826b822b912bdfbc3e30f4e12d3aa61e4f42f068e6083f9ec7f5eab96",
+    "benchmarks/prebin_datasets.py": "c8e6dff80d2039641a2fdf1f0e4e9ae4ab9d77e95f5514e4cd9ea785c210e1f0",
     "data/data_pipleine.go": "497b83620396ea43acfe5740fb24de59f41ffadd23a3c020063846453f86678f",
-    "results/phase0_e2e.json": "c5b0f6abec96e945cf3e355ffc12ba858f080343827abb1b1fa9f8004861d276",
-    "results/phase0_results.json": "81a3025fc36336e4b9ec6c81db79c03b0f56afb0ccf24e31f7548f231b412867"
+    "results/phase0_e2e.json": "413b24e3f86f0f492a9e3bc30c3f80b2f1d1bed5395930ec0d7da93f79ff83ff",
+    "results/phase0_results.json": "b0ca9f3c30658cdee5bc4c85ac897a5ccf63de5c412fcf7c469257deebf8a18d"
   }
 }

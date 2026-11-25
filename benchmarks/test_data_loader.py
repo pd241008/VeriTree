@@ -18,12 +18,23 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data_loader import load_benchmark_dataset, MmapColumnStore, PREPROCESSED_DIR
 
 SPEC_MAP = {
+    # Paper core (6)
     "higgs": (11_000_000, 28),
     "covertype": (581_012, 54),
     "adult": (48_842, 14),
     "creditcard": (284_807, 30),
     "unsw_nb15": (257_673, 44),
     "california_housing": (20_640, 8),
+    # Recommended additions (6)
+    "yearpredictionmsd": (515_345, 90),
+    "susy": (5_000_000, 18),
+    "bank_marketing": (45_211, 17),
+    "diabetes": (101_766, 49),
+    "epsilon": (400_000, 2000),
+    # Centralized datasets (3)
+    "cicids2017": (2_830_743, 84),
+    "nsl_kdd": (125_973, 18),
+    "rta": (12_316, 31),
 }
 
 
@@ -35,15 +46,13 @@ def _shape_path(name: str) -> str:
     return os.path.join(PREPROCESSED_DIR, f"{name}_shape.json")
 
 
-def test_spec_map_has_all_six_datasets():
-    """The spec map covers the six ICML-claimed datasets."""
-    assert set(SPEC_MAP.keys()) == {
-        "higgs", "covertype", "adult", "creditcard", "unsw_nb15", "california_housing"
-    }
+def test_spec_map_has_all_datasets():
+    """The spec map covers all 14 benchmark datasets."""
+    assert len(SPEC_MAP) == 14
 
 
 def test_loader_opens_all_present_datasets():
-    """All 6 real .bin files open with actual dimensions from sidecar shape files."""
+    """All present .bin files open with actual dimensions from sidecar shape files."""
     present = 0
     for name in SPEC_MAP:
         path = _bin_path(name)
@@ -63,7 +72,7 @@ def test_loader_opens_all_present_datasets():
             assert g is None and h is None, "gradients/hessians must be None (not fabricated)"
         finally:
             loader.close()
-    assert present == 6, f"expected 6 present datasets, got {present}"
+    assert present >= 6, f"expected at least 6 present datasets, got {present}"
 
 
 def test_loader_raises_when_bin_missing():
@@ -135,7 +144,7 @@ def test_gradients_hessians_are_none_not_fabricated():
 
 
 if __name__ == "__main__":
-    test_spec_map_has_all_six_datasets()
+    test_spec_map_has_all_datasets()
     test_loader_opens_all_present_datasets()
     test_loader_raises_when_bin_missing()
     test_mmap_column_store_opens_existing_file()

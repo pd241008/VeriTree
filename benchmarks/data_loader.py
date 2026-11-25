@@ -82,14 +82,19 @@ def load_benchmark_dataset(
     base_dir: str = "data/preprocessed"
 ) -> Tuple[MmapColumnStore, Optional[np.ndarray], Optional[np.ndarray]]:
     """
-    Standard loader returning (mmap_features, gradients, hessians) for:
-    HIGGS (N=11M, D=28), Covertype (N=581k, D=54), Adult Income (N=48k, D=14),
-    CreditCard Fraud (N=284k, D=30), UNSW-NB15 (N=257k, D=42), California Housing (N=20k, D=8).
+    Standard loader returning (mmap_features, gradients, hessians) for all
+    VeriTree benchmark datasets:
+
+    Paper core (6): HIGGS, Covertype, Adult, CreditCard, UNSW-NB15, California Housing
+    Recommended additions (6): YearPredictionMSD, SUSY, Bank Marketing, Diabetes,
+    Epsilon, KDD Cup 1999
+    Centralized datasets (3): CICIDS2017, NSL-KDD, RTA Dataset
 
     Gradients/hessians are training-derived and are NOT synthesized here.
     They are returned as None until the training pipeline supplies them.
     """
-    # Nominal spec (from paper). Actual dims come from sidecar shape JSON.
+    # Nominal spec (from paper / dataset sources). Actual dims come from
+    # sidecar shape JSON (real data may differ). Never fabricates dimensions.
     spec_map = {
         "higgs": (11000000, 28),
         "covertype": (581012, 54),
@@ -97,6 +102,14 @@ def load_benchmark_dataset(
         "creditcard": (284807, 30),
         "unsw_nb15": (257673, 44),
         "california_housing": (20640, 8),
+        "yearpredictionmsd": (515345, 90),
+        "susy": (5000000, 18),
+        "bank_marketing": (45211, 17),
+        "diabetes": (101766, 49),
+        "epsilon": (400000, 2000),
+        "cicids2017": (2830743, 84),
+        "nsl_kdd": (125973, 18),
+        "rta": (12316, 31),
     }
     key = dataset_name.lower()
     if key not in spec_map:

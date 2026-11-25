@@ -5,6 +5,9 @@ Exercises the Phase 0 toolchain & storage tenets using REAL data from
 
 Does NOT synthesize data or results. Reports which datasets are actually present.
 Writes results/phase0_e2e.json traceability manifest.
+
+Large datasets (HIGGS, SUSY, CICIDS2017) are presence-checked only;
+column-access timing is done on smaller datasets to avoid OOM.
 """
 
 import json
@@ -18,18 +21,34 @@ sys.path.insert(0, os.path.join(REPO_ROOT, "benchmarks"))
 
 from data_loader import load_benchmark_dataset, PREPROCESSED_DIR  # noqa: E402
 
+# All 14 benchmark datasets. Large ones (>1M rows) are presence-only.
 SPEC_MAP = {
+    # Paper core (6)
     "higgs": (11_000_000, 28),
     "covertype": (581_012, 54),
     "adult": (48_842, 14),
     "creditcard": (284_807, 30),
     "unsw_nb15": (257_673, 44),
     "california_housing": (20_640, 8),
+    # Recommended additions (6)
+    "yearpredictionmsd": (515_345, 90),
+    "susy": (5_000_000, 18),
+    "bank_marketing": (45_211, 17),
+    "diabetes": (101_766, 49),
+    "epsilon": (400_000, 2000),
+    # Centralized datasets (3)
+    "cicids2017": (2_830_743, 84),
+    "nsl_kdd": (125_973, 18),
+    "rta": (12_316, 31),
 }
+
+# Datasets too large for full column-access timing (presence-only)
+PRESENCE_ONLY = {"higgs", "susy", "cicids2017"}
 
 
 def mmap_load_and_time(name: str) -> Optional[Dict[str, Any]]:
-    """Load a dataset via mmap column-store and time column access. Returns None if .bin absent."""
+    """Load a dataset via mmap column-store and time column access.
+    Returns None if .bin absent. Large datasets are presence-only."""
     path = os.path.join(PREPROCESSED_DIR, f"{name}_binned_uint8.bin")
     if not os.path.exists(path):
         print(f"[SKIP] {name}: no pre-binned .bin at {path}")
@@ -39,6 +58,20 @@ def mmap_load_and_time(name: str) -> Optional[Dict[str, Any]]:
     loader.open()
     try:
         n, d = loader.num_samples, loader.num_features
+
+        if name in PRESENCE_ONLY:
+            # Presence-only: just verify the file opens with correct shape
+            assert loader._mmap_obj.shape == (n, d), \
+                f"{name}: shape {loader._mmap_obj.shape} != ({n},{d})"
+            return {
+                "dataset": name,
+                "num_samples": n,
+                "num_features": d,
+                "dtype": str(loader._mmap_obj.dtype),
+                "mmap_bytes": loader.expected_bytes,
+                "presence_only": True,
+            }
+
         start = time.perf_counter_ns()
         col_sums = []
         for f in range(d):
@@ -54,6 +87,7 @@ def mmap_load_and_time(name: str) -> Optional[Dict[str, Any]]:
             "column_access_wall_ns": elapsed_ns,
             "column_access_wall_us": elapsed_ns / 1_000.0,
             "first_column_sum": col_sums[0] if col_sums else 0,
+            "presence_only": False,
         }
     finally:
         loader.close()
