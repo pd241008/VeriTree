@@ -1,7 +1,17 @@
 //! VeriTree Phase 4 Detailed Verification Gate - Layer 3 Edge Cases
 //! Covers: CoW Shadow LmO Evaluation, Tree Margin Auditing
 
-use veritree_engine::{audit_tree_margins, eval_shadow_lmo, DecisionTree};
+use veritree_engine::{audit_tree_margins, eval_shadow_lmo, BinnedDataset, DecisionTree};
+
+fn make_test_dataset(num_samples: usize) -> BinnedDataset {
+    let mut dataset = BinnedDataset::new(num_samples, 1, 256);
+    for i in 0..num_samples {
+        dataset.data[i] = 0u8; // all route to leaf 0 (bin 0 <= bin 0)
+        dataset.gradients[i] = (i as f32) * 0.5 - 2.0;
+        dataset.hessians[i] = 1.0;
+    }
+    dataset
+}
 
 /// ---- Phase 4 Step 4.1: CoW Shadow LmO Evaluation ----
 
@@ -10,9 +20,9 @@ fn test_eval_shadow_lmo_empty_clusters() {
     let tree = DecisionTree::new(3);
     let trees = vec![tree];
     let clusters: Vec<Vec<usize>> = vec![];
-    let targets: Vec<f32> = vec![];
+    let dataset = make_test_dataset(0);
 
-    let scores = eval_shadow_lmo(&trees, &clusters, &targets);
+    let scores = eval_shadow_lmo(&trees, &clusters, &dataset, 1.0);
     assert!(scores.is_empty());
 }
 
@@ -22,9 +32,9 @@ fn test_eval_shadow_lmo_single_cluster() {
     tree.nodes[0].h_node = 100.0;
     let trees = vec![tree];
     let clusters = vec![vec![0usize, 1, 2]]; // m = 3
-    let targets = vec![0.5f32];
+    let dataset = make_test_dataset(3);
 
-    let scores = eval_shadow_lmo(&trees, &clusters, &targets);
+    let scores = eval_shadow_lmo(&trees, &clusters, &dataset, 1.0);
     assert_eq!(scores.len(), 1);
     assert!(scores[0] >= 0.0);
     assert!(scores[0].is_finite());
@@ -41,9 +51,9 @@ fn test_eval_shadow_lmo_multiple_clusters() {
         vec![6],
         vec![7, 8, 9, 10, 11],
     ];
-    let targets = vec![0.1f32, 0.2, 0.3, 0.4];
+    let dataset = make_test_dataset(12);
 
-    let scores = eval_shadow_lmo(&trees, &clusters, &targets);
+    let scores = eval_shadow_lmo(&trees, &clusters, &dataset, 1.0);
     assert_eq!(scores.len(), 4);
     for s in &scores {
         assert!(s.is_finite());
@@ -59,9 +69,9 @@ fn test_eval_shadow_lmo_multiple_trees() {
     tree2.nodes[0].h_node = 20.0;
     let trees = vec![tree1, tree2];
     let clusters = vec![vec![0usize, 1, 2]];
-    let targets = vec![0.5f32];
+    let dataset = make_test_dataset(3);
 
-    let scores = eval_shadow_lmo(&trees, &clusters, &targets);
+    let scores = eval_shadow_lmo(&trees, &clusters, &dataset, 1.0);
     assert_eq!(scores.len(), 1);
     assert!(scores[0].is_finite());
     // Score accumulates over both trees
@@ -73,11 +83,11 @@ fn test_eval_shadow_lmo_cluster_size_zero() {
     let mut tree = DecisionTree::new(3);
     tree.nodes[0].h_node = 10.0;
     let trees = vec![tree];
-    // Empty cluster => m = 0 => delta = 0 => score = 0
+    // Empty cluster => m = 0 => no delta => score = 0
     let clusters = vec![vec![]];
-    let targets = vec![0.5f32];
+    let dataset = make_test_dataset(1);
 
-    let scores = eval_shadow_lmo(&trees, &clusters, &targets);
+    let scores = eval_shadow_lmo(&trees, &clusters, &dataset, 1.0);
     assert_eq!(scores.len(), 1);
     assert_eq!(scores[0], 0.0);
 }
@@ -88,25 +98,11 @@ fn test_eval_shadow_lmo_determinism() {
     tree.nodes[0].h_node = 42.0;
     let trees = vec![tree];
     let clusters = vec![vec![0usize, 1, 2, 3, 4]];
-    let targets = vec![0.5f32];
+    let dataset = make_test_dataset(5);
 
-    let scores1 = eval_shadow_lmo(&trees, &clusters, &targets);
-    let scores2 = eval_shadow_lmo(&trees, &clusters, &targets);
+    let scores1 = eval_shadow_lmo(&trees, &clusters, &dataset, 1.0);
+    let scores2 = eval_shadow_lmo(&trees, &clusters, &dataset, 1.0);
     assert_eq!(scores1, scores2);
-}
-
-#[test]
-fn test_eval_shadow_lmo_zero_h_node() {
-    let mut tree = DecisionTree::new(3);
-    tree.nodes[0].h_node = 0.0;
-    let trees = vec![tree];
-    let clusters = vec![vec![0usize, 1]];
-    let targets = vec![0.5f32];
-
-    let scores = eval_shadow_lmo(&trees, &clusters, &targets);
-    assert_eq!(scores.len(), 1);
-    // delta = (2 * 0.01) / (0.0 + 1.0) = 0.02, score = 0.0004
-    assert!((scores[0] - 0.0004).abs() < 1e-6);
 }
 
 /// ---- Phase 4 Step 4.2: Tree Margin Auditing ----

@@ -179,6 +179,31 @@ impl DecisionTree {
         }
         0.0
     }
+
+    /// Returns the leaf id a sample routes to, for Copy-on-Write shadow evaluation.
+    /// Traverses the tree using feature/bin splits; returns the leaf index.
+    pub fn leaf_id_for_sample(&self, sample: &[u8]) -> usize {
+        let mut node_idx = 0;
+        for _ in 0..self.max_depth {
+            let node = &self.nodes[node_idx];
+            let f = node.feature_idx[0] as usize;
+            let tau = node.bin_idx[0] as u8;
+            if sample[f] <= tau {
+                let next = node.left_child_id;
+                if next < 0 {
+                    return (-next - 1) as usize;
+                }
+                node_idx = next as usize;
+            } else {
+                let next = node.right_child_id;
+                if next < 0 {
+                    return (-next - 1) as usize;
+                }
+                node_idx = next as usize;
+            }
+        }
+        0
+    }
 }
 
 /// Helper: regularized split score psi(G, H) = G^2 / (H + lambda)
