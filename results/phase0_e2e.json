@@ -1,0 +1,69 @@
+{
+  "phase": 0,
+  "description": "Workspace architecture & toolchain initialization",
+  "tenets": [
+    "64-byte L1 cache-line alignment",
+    "AVX2 + FMA SIMD",
+    "Strict IEEE-754 determinism (-fno-fast-math)",
+    "Zero-copy mmap-backed uint8_t column store",
+    "No data fabrication \u2014 real .bin files required"
+  ],
+  "toolchains": {
+    "python": "3.14.6"
+  },
+  "datasets_present": {
+    "higgs": {
+      "dataset": "higgs",
+      "num_samples": 11000000,
+      "num_features": 28,
+      "dtype": "uint8",
+      "mmap_bytes": 308000000,
+      "column_access_wall_ns": 1330370336,
+      "column_access_wall_us": 1330370.336,
+      "first_column_sum": 1402672208
+    },
+    "covertype": {
+      "dataset": "covertype",
+      "num_samples": 581012,
+      "num_features": 54,
+      "dtype": "uint8",
+      "mmap_bytes": 31374648,
+      "column_access_wall_ns": 327822094,
+      "column_access_wall_us": 327822.094,
+      "first_column_sum": 74169629
+    },
+    "adult": {
+      "dataset": "adult",
+      "num_samples": 32561,
+      "num_features": 14,
+      "dtype": "uint8",
+      "mmap_bytes": 455854,
+      "column_access_wall_ns": 19950851,
+      "column_access_wall_us": 19950.851,
+      "first_column_sum": 699979
+    },
+    "unsw_nb15": {
+      "dataset": "unsw_nb15",
+      "num_samples": 82333,
+      "num_features": 44,
+      "dtype": "uint8",
+      "mmap_bytes": 3622652,
+      "column_access_wall_ns": 16200066,
+      "column_access_wall_us": 16200.066,
+      "first_column_sum": 10497459
+    },
+    "california_housing": {
+      "dataset": "california_housing",
+      "num_samples": 20640,
+      "num_features": 8,
+      "dtype": "uint8",
+      "mmap_bytes": 165120,
+      "column_access_wall_ns": 1594367,
+      "column_access_wall_us": 1594.367,
+      "first_column_sum": 2631977
+    }
+  },
+  "datasets_present_count": 5,
+  "datasets_total_claimed": 6,
+  "seed": 42
+}

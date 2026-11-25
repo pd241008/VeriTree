@@ -6,12 +6,14 @@ pub mod trainer;
 pub mod layer1_cert;
 pub mod layer2_quasiml;
 pub mod layer3_security;
+pub mod telemetry;
 
 pub use inverted_index::InvertedLeafRoutingIndex;
 pub use trainer::{BinnedDataset, DecisionTree, HistogramTrainer, SplitSensitivityRingBuffer, TreeConfig};
 pub use layer1_cert::{check_layer1_invariance, update_leaf_weight_exact, CertResult};
 pub use layer2_quasiml::{classify_runner_up_transition, cross_feature_partition, ResidualPropagator, TransitionKind};
 pub use layer3_security::{eval_shadow_lmo, audit_tree_margins};
+pub use telemetry::{Telemetry, TelemetrySample, assert_ieee754_determinism};
 
 /// Primary VeriTree Ensemble Orchestrator
 pub struct VeriTreeEnsemble {
