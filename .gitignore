@@ -16,6 +16,9 @@ lean4-certificates/.lake/
 *.ilean
 *.c
 
+# Lean 4 Lake packages (mathlib - too large to commit)
+lean4-certificates/lake-packages/
+
 # C++ build artifacts
 *.o
 *.a
